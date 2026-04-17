@@ -13,6 +13,10 @@
 
 ## 🌐 Live Demo
 
+https://github.com/MouradIntellij/portfolio_chat
+https://portfolio-chat-phi.vercel.app/
+
+
 👉 **Frontend** : https://your-demo-link.com
 👉 **API** : https://your-api-link.com
 
