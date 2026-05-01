@@ -1,13 +1,16 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 
-const phoneNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '+10000000000';
-const prefilledMessage = encodeURIComponent(
-    "Bonjour, je vous contacte depuis votre portfolio."
-);
+const phoneNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '15140000000';
 
 export default function WhatsAppButton() {
-    const href = `https://wa.me/${phoneNumber.replace(/[^\d]/g, '')}?text=${prefilledMessage}`;
+    const cleanNumber = phoneNumber.replace(/\D/g, '');
+
+    const message = encodeURIComponent(
+        'Bonjour, je vous contacte depuis votre portfolio.'
+    );
+
+    const href = `https://wa.me/${cleanNumber}?text=${message}`;
 
     return (
         <a
@@ -15,10 +18,9 @@ export default function WhatsAppButton() {
             target="_blank"
             rel="noreferrer"
             aria-label="Contacter sur WhatsApp"
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-500/30 hover:scale-105 transition-transform"
+            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-500/30 hover:scale-105 transition-transform duration-300"
         >
             <MessageCircle className="w-6 h-6" />
         </a>
     );
 }
-

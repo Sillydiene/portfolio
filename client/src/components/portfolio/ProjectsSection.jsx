@@ -4,32 +4,60 @@ import ProjectCard from './ProjectCard';
 
 const projects = [
     {
-        title: 'E-Commerce Premium',
-        description: "Plateforme e-commerce complète avec panier, paiement Stripe et tableau de bord d'administration avancé.",
-        image: 'https://media.base44.com/images/public/69df06c90bf17d8b42d002b4/8d3a69fce_generated_afcb8360.png',
-        tags: ['React', 'Node.js', 'Stripe', 'PostgreSQL'],
+        title: 'Projet ChatApp',
+        description: "Application de discussion en temps réel permettant aux utilisateurs d’entrer un pseudo, de choisir une room et d’échanger instantanément dans différents espaces de conversation.",
+        image: '/chatAppProject/imageChatApp.png',
+        images: [
+            '/chatAppProject/imageChatApp.png',
+            '/chatAppProject/chatApp2.png'
+        ],
+        tags: ['React', 'Node.js', 'Socket.io', 'Chat en temps réel'],
         category: 'Web',
+        liveUrl: 'https://chat-app-ten-olive.vercel.app/',
+        githubUrl: 'https://github.com/Sillydiene/chat-app',
     },
     {
-        title: 'SaaS Project Manager',
-        description: "Application de gestion de projets en temps réel avec tableaux Kanban, suivi du temps et collaboration d'équipe.",
-        image: 'https://media.base44.com/images/public/69df06c90bf17d8b42d002b4/4adba659d_generated_2434fc75.png',
-        tags: ['Next.js', 'TypeScript', 'Prisma', 'WebSocket'],
+        title: 'Projet VidéoConférence',
+        description: "Application de visioconférence permettant aux utilisateurs de créer ou rejoindre une salle, d’échanger en temps réel et de collaborer à distance dans une interface moderne et fluide.",
+        image: '/videoconfProject/imageVideoConf.png',
+        images: [
+            '/videoconfProject/imageVideoConf.png',
+            '/videoconfProject/videoconf2.png'
+        ],
+        tags: ['React', 'Node.js', 'WebRTC', 'Temps réel'],
         category: 'Web',
+        liveUrl: 'https://videoconference-mini-lcgiscr58-sillydienes-projects.vercel.app/',
+        githubUrl: 'https://github.com/Sillydiene/videoconferenceMini',
     },
     {
-        title: 'FinTech Mobile App',
-        description: "Application bancaire mobile avec transactions sécurisées, analytics financiers et gestion de budget intelligent.",
-        image: 'https://media.base44.com/images/public/69df06c90bf17d8b42d002b4/1f8a3d5f4_generated_10e200ec.png',
-        tags: ['React Native', 'Python', 'AWS', 'AI/ML'],
+        title: 'Projet Barbershop',
+        description: "Application de prise de rendez-vous pour salon de coiffure développée en SwiftUI, avec intégration d’API pour gérer les services, les réservations et une expérience utilisateur fluide sur mobile.",
+        image: '/projetBarber/barbershopProject.png',
+        images: [
+            '/projetBarber/barbershopProject.png',
+            '/projetBarber/barber1.png',
+            '/projetBarber/barber2.png',
+            '/projetBarber/barber3.png'
+        ],
+        tags: ['SwiftUI', 'API', 'iOS', 'Mobile'],
         category: 'Mobile',
+        liveUrl: 'https://github.com/Sillydiene/Projet-swiftUI-API-application-prise-de-rendez-vous-Barber-shop',
+        githubUrl: 'https://github.com/Sillydiene/Projet-swiftUI-API-application-prise-de-rendez-vous-Barber-shop',
     },
     {
-        title: 'Agence Créative',
-        description: "Site vitrine ultra-moderne pour une agence créative avec animations immersives et design éditorial.",
-        image: 'https://media.base44.com/images/public/69df06c90bf17d8b42d002b4/7cc6f8fa2_generated_0eb2b280.png',
-        tags: ['React', 'Three.js', 'GSAP', 'Figma'],
+        title: 'Gestion de Banque ADO.NET C#',
+        description: "Application de gestion bancaire développée en C# avec ADO.NET et formulaires Windows, utilisant DataReader, DataSet et DataTable pour gérer les opérations bancaires, les clients et les comptes.",
+        image: '/banqDB_C/banqDB_C_1.png',
+        images: [
+            '/banqDB_C/banqDB_C_1.png',
+            '/banqDB_C/banqDB_C_2.png',
+            '/banqDB_C/banqDB_C_3.png',
+            '/banqDB_C/bandDB_C_4.png'
+        ],
+        tags: ['C#', 'ADO.NET', 'DataSet', 'Windows Forms'],
         category: 'Design',
+        liveUrl: 'https://github.com/Sillydiene/Projet-C-ADO.NET-formulaires-gestion-Banque-Datareader-Dataset-Datatable',
+        githubUrl: 'https://github.com/Sillydiene/Projet-C-ADO.NET-formulaires-gestion-Banque-Datareader-Dataset-Datatable',
     },
 ];
 

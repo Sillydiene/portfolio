@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { Code2, Palette, Rocket, Users } from 'lucide-react';
 
 const stats = [
-    { icon: Code2, value: '5+', label: "Années d'expérience" },
-    { icon: Rocket, value: '50+', label: 'Projets réalisés' },
-    { icon: Users, value: '30+', label: 'Clients satisfaits' },
+    { icon: Code2, value: '3e année', label: "Parcours en informatique" },
+    { icon: Rocket, value: 'Objectif', label: 'Spécialisation en développement web moderne' },
+    { icon: Users, value: 'Plusieurs projets', label: 'Video Conference, ChatApp, Gestion de Banque' },
     { icon: Palette, value: '100%', label: 'Passion & créativité' },
 ];
 
@@ -29,14 +29,11 @@ export default function AboutSection() {
                         </h2>
                         <div className="mt-8 space-y-5 text-muted-foreground font-inter leading-relaxed">
                             <p>
-                                Développeur Full Stack avec plus de 5 ans d'expérience, je suis spécialisé dans
-                                la création d'applications web modernes et performantes. Mon approche allie
-                                esthétique soignée et excellence technique.
-                            </p>
+                                Étudiant en 3e année de DEC en informatique, je me spécialise en développement web frontend et backend (React, JavaScript, Node.js, C#, Java, PHP, SQL).
+
+                                Actuellement à la recherche d’un stage en développement web pour appliquer mes compétences et évoluer dans un environnement professionnel.                            </p>
                             <p>
-                                Je travaille avec les technologies les plus récentes pour créer des solutions
-                                sur mesure qui répondent parfaitement aux besoins de mes clients. Chaque projet
-                                est une opportunité de repousser les limites du possible.
+                                J’aime transformer des idées en projets concrets, tout en améliorant continuellement mes compétences techniques et ma compréhension des bonnes pratiques de développement.
                             </p>
                         </div>
                         <a

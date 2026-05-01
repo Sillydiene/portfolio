@@ -7,6 +7,9 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "cd client && vite",
     "dev:server": "node --watch server/server.js",
+
+    "start": "node server/server.js",  👈 OBLIGATOIRE POUR RENDER
+
     "build": "cd client && vite build",
     "preview": "cd client && vite preview",
     "lint": "eslint ."
@@ -24,7 +27,6 @@
     "react-router-dom": "^7.13.0",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
-
     "uuid": "^13.0.0"
   },
   "devDependencies": {

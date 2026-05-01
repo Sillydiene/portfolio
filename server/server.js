@@ -1,14 +1,16 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import http from "node:http";
 import { Server } from "socket.io";
 import cors from "cors";
 import crypto from "node:crypto";
 import axios from "axios";
-const firstMessages = new Map(); // roomId -> first message
 
+dotenv.config();
 
+// ─────────────────────────────
+// INIT
+// ─────────────────────────────
 const app = express();
 const server = http.createServer(app);
 
@@ -27,6 +29,7 @@ app.use(express.json());
 // ─────────────────────────────
 const roomMessages = new Map();
 const waitingRooms = new Map();
+const firstMessages = new Map();
 
 const MAX_HISTORY = 100;
 
@@ -40,7 +43,7 @@ function saveMessage(roomId, msg) {
 }
 
 // ─────────────────────────────
-// TELEGRAM
+// TELEGRAM (NEW VISITOR)
 // ─────────────────────────────
 async function notifyTelegram({ roomId, visitorName, pageUrl }) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -52,11 +55,10 @@ async function notifyTelegram({ roomId, visitorName, pageUrl }) {
     }
 
     const text =
-        `🟢 Nouveau visiteur
-
-👤 ${visitorName}
-🆔 Room: ${roomId}
-🌐 ${pageUrl}`;
+        `🟢 Nouveau visiteur\n\n` +
+        `👤 ${visitorName}\n` +
+        `🆔 Room: ${roomId}\n` +
+        `🌐 ${pageUrl}`;
 
     try {
         await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -69,7 +71,36 @@ async function notifyTelegram({ roomId, visitorName, pageUrl }) {
 }
 
 // ─────────────────────────────
-// NOTIFY (OPEN CHAT)
+// TELEGRAM (FIRST MESSAGE)
+// ─────────────────────────────
+async function notifyTelegramFirstMessage({ roomId, visitorName, message }) {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
+
+    if (!token || !chatId) return;
+
+    const adminLink = `${process.env.CLIENT_URL || "http://localhost:5173"}/chat?roomId=${roomId}`;
+
+    const text =
+        `🟢 Nouveau chat ouvert\n\n` +
+        `👤 ${visitorName}\n` +
+        `🆔 Room: ${roomId}\n\n` +
+        `💬 Premier message:\n"${message}"\n\n` +
+        `👉 Ouvrir chat admin:\n${adminLink}`;
+
+    try {
+        await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+            chat_id: chatId,
+            text,
+            disable_web_page_preview: true,
+        });
+    } catch (err) {
+        console.log("❌ Telegram error:", err.response?.data || err.message);
+    }
+}
+
+// ─────────────────────────────
+// API: OPEN CHAT
 // ─────────────────────────────
 app.post("/api/live-chat/notify", async (req, res) => {
     const roomId = req.body?.roomId || crypto.randomUUID();
@@ -94,43 +125,14 @@ app.post("/api/live-chat/notify", async (req, res) => {
 });
 
 // ─────────────────────────────
-// ADMIN GET ROOMS (backup)
+// API: GET ROOMS
+// ─────────────────────────────
 app.get("/api/live-chat/rooms", (req, res) => {
     res.json({ rooms: [...waitingRooms.values()] });
 });
 
 // ─────────────────────────────
-// SOCKET SYSTEM
-async function notifyTelegramFirstMessage({ roomId, visitorName, message }) {
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
-
-    if (!token || !chatId) return;
-
-    const adminLink = `${process.env.CLIENT_URL || "http://localhost:5173"}/chat?roomId=${roomId}`;
-
-    const text =
-        `🟢 Nouveau chat ouvert
-
-👤 ${visitorName}
-🆔 Room: ${roomId}
-
-💬 Premier message:
-"${message}"
-
-👉 Ouvrir chat admin:
-${adminLink}`;
-
-    try {
-        await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
-            chat_id: chatId,
-            text,
-            disable_web_page_preview: true,
-        });
-    } catch (err) {
-        console.log("❌ Telegram error:", err.response?.data || err.message);
-    }
-}
+// SOCKET.IO
 // ─────────────────────────────
 io.on("connection", (socket) => {
     console.log("🟢 Connecté:", socket.id);
@@ -162,13 +164,10 @@ io.on("connection", (socket) => {
 
         saveMessage(roomId, msg);
 
-        // ─────────────────────────────
-        // 🔥 CAPTURE PREMIER MESSAGE VISITOR
-        // ─────────────────────────────
+        // FIRST MESSAGE (VISITOR)
         if (sender === "visitor" && !firstMessages.has(roomId)) {
             firstMessages.set(roomId, msg);
 
-            // send Telegram with FIRST MESSAGE
             notifyTelegramFirstMessage({
                 roomId,
                 visitorName: "Visiteur portfolio",
@@ -186,6 +185,11 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(process.env.PORT || 3001, () => {
-    console.log("🚀 Server running on http://localhost:3001");
+// ─────────────────────────────
+// START SERVER
+// ─────────────────────────────
+const PORT = process.env.PORT || 3001;
+
+server.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });

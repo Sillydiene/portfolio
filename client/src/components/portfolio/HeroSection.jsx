@@ -1,102 +1,144 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, Github, Linkedin } from 'lucide-react';
+import imagePro from '../../assets/imagePro.png';
+import { useLanguage } from '../../context/LanguageContext.jsx';
 
 export default function HeroSection() {
+
+    const { language } = useLanguage();
+
+    const texts = {
+        fr: {
+            badge: "El Hadji Silly Diene | Recherche de stage",
+            description: "Passionné par le code, déterminé à devenir expert en développement web moderne",
+            btnProject: "Voir mes projets",
+            btnCV: "Mon CV",
+            scroll: "Scroll"
+        },
+        en: {
+            badge: "El Hadji Silly Diene | Looking for internship",
+            description: "Passionate about coding, determined to become an expert in modern web development",
+            btnProject: "View my projects",
+            btnCV: "My Resume",
+            scroll: "Scroll"
+        }
+    };
+
     return (
-        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-            {/* Gradient orbs */}
+        <section
+            id="hero"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        >
             <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-
-            {/* Grid pattern overlay */}
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
             <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+
+                {/* Badge */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7 }}
+                >
+                    <span className="inline-block px-4 py-1.5 rounded-full border border-primary/30 text-primary text-xs font-inter tracking-widest uppercase mb-8">
+                        {texts[language].badge}
+                    </span>
+                </motion.div>
+
+                {/* Image */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+                    className="flex justify-center"
                 >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-primary/30 text-primary text-xs font-inter tracking-widest uppercase mb-8">
-            Développeur Full Stack
-          </span>
+                    <div className="relative">
+                        <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-110" />
+                        <img
+                            src={imagePro}
+                            alt="Profile"
+                            className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 object-cover rounded-full border-4 border-primary/30 shadow-2xl"
+                        />
+                    </div>
                 </motion.div>
 
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
-                    className="font-playfair text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
-                >
-                    Créateur
-                    <br />
-                    <span className="text-primary">d'expériences</span>
-                    <br />
-                    digitales
-                </motion.h1>
-
+                {/* Description */}
                 <motion.p
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-                    className="mt-8 text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-inter font-light leading-relaxed"
+                    className="mt-10 text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-inter font-light leading-relaxed"
                 >
-                    Je conçois et développe des applications web modernes, performantes et élégantes
-                    qui transforment des idées en produits digitaux remarquables.
+                    {texts[language].description}
                 </motion.p>
 
+                {/* Buttons */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
-                    className="mt-10 flex items-center justify-center gap-5"
+                    className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <a
                         href="#projects"
                         className="px-8 py-3.5 bg-primary text-primary-foreground rounded-full font-inter text-sm font-medium tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                     >
-                        Voir mes projets
+                        {texts[language].btnProject}
                     </a>
+
                     <a
-                        href="#contact"
+                        href="/CV_DeveloppementWeb.pdf"
+                        target="_blank"
+                        rel="noreferrer"
                         className="px-8 py-3.5 border border-border rounded-full font-inter text-sm font-medium tracking-wide text-foreground hover:border-primary/50 hover:text-primary transition-all duration-300"
                     >
-                        Me contacter
+                        {texts[language].btnCV}
                     </a>
                 </motion.div>
 
+                {/* Scroll */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8, delay: 0.6 }}
-                    className="mt-12 flex items-center justify-center gap-6"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+                    className="mt-10"
                 >
-                    {[
-                        { icon: Github, href: '#', label: 'GitHub' },
-                        { icon: Linkedin, href: '#', label: 'LinkedIn' },
-                        { icon: Mail, href: '#contact', label: 'Email' },
-                    ].map(({ icon: Icon, href, label }) => (
-                        <a
-                            key={label}
-                            href={href}
-                            className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                            aria-label={label}
-                        >
-                            <Icon className="w-4 h-4" />
-                        </a>
-                    ))}
+                    <a
+                        href="#about"
+                        className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                    >
+                        <span className="text-xs font-inter tracking-widest uppercase">
+                            {texts[language].scroll}
+                        </span>
+                        <ArrowDown className="w-4 h-4" />
+                    </a>
                 </motion.div>
 
+                {/* Social */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.75, ease: 'easeOut' }}
+                    className="mt-8 flex items-center justify-center gap-4"
                 >
-                    <a href="#about" className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
-                        <span className="text-xs font-inter tracking-widest uppercase">Scroll</span>
-                        <ArrowDown className="w-4 h-4 animate-bounce" />
+                    <a
+                        href="https://github.com/Sillydiene"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+                    >
+                        <Github className="w-4 h-4" />
+                    </a>
+
+                    <a
+                        href="https://www.linkedin.com/in/el-hadji-silly-di%C3%A8ne-0b02ba1bb/"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+                    >
+                        <Linkedin className="w-4 h-4" />
                     </a>
                 </motion.div>
             </div>

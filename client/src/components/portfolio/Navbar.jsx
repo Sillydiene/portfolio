@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '../../context/LanguageContext.jsx';
 
-const navLinks = [
-    { label: 'Accueil', href: '#hero' },
-    { label: 'À propos', href: '#about' },
-    { label: 'Compétences', href: '#skills' },
-    { label: 'Projets', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-];
+const navLinks = {
+    fr: [
+        { label: 'Accueil', href: '#hero' },
+        { label: 'À propos', href: '#about' },
+        { label: 'Compétences', href: '#skills' },
+        { label: 'Projets', href: '#projects' },
+        { label: 'Contact', href: '#contact' },
+    ],
+    en: [
+        { label: 'Home', href: '#hero' },
+        { label: 'About', href: '#about' },
+        { label: 'Skills', href: '#skills' },
+        { label: 'Projects', href: '#projects' },
+        { label: 'Contact', href: '#contact' },
+    ],
+};
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [isDark, setIsDark] = useState(true);
 
+    const { language, toggleLanguage } = useLanguage();
+
     useEffect(() => {
-        // Apply dark class on mount (default dark)
         document.documentElement.classList.add('dark');
     }, []);
 
@@ -47,7 +58,7 @@ export default function Navbar() {
 
                 {/* Desktop */}
                 <div className="hidden md:flex items-center gap-8 mr-4">
-                    {navLinks.map((link) => (
+                    {navLinks[language].map((link) => (
                         <a
                             key={link.href}
                             href={link.href}
@@ -58,16 +69,26 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                {/* Theme toggle + Mobile menu button */}
+                {/* Actions */}
                 <div className="flex items-center gap-3">
+
+                    {/* Language */}
+                    <button
+                        onClick={toggleLanguage}
+                        className="px-3 py-1 rounded-full border border-primary/30 text-primary text-sm hover:bg-primary/10 transition"
+                    >
+                        {language === 'fr' ? 'EN' : 'FR'}
+                    </button>
+
+                    {/* Theme */}
                     <button
                         onClick={toggleTheme}
                         className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
-                        aria-label="Toggle theme"
                     >
                         {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                     </button>
 
+                    {/* Mobile menu */}
                     <button
                         className="md:hidden text-foreground"
                         onClick={() => setMobileOpen(!mobileOpen)}
@@ -77,7 +98,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile */}
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
@@ -87,7 +108,7 @@ export default function Navbar() {
                         className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border"
                     >
                         <div className="px-6 py-6 flex flex-col gap-4">
-                            {navLinks.map((link) => (
+                            {navLinks[language].map((link) => (
                                 <a
                                     key={link.href}
                                     href={link.href}
