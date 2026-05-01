@@ -28,14 +28,10 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    // ✅ IMPORTANT POUR VERCEL
+    // ✅ FIX FINAL POUR VERCEL
     build: {
-      rollupOptions: {
-        // évite les erreurs type Getter/Setter
-        onwarn(warning, warn) {
-          if (warning.code === 'THIS_IS_UNDEFINED') return
-          warn(warning)
-        },
+      commonjsOptions: {
+        transformMixedEsModules: true,
       },
     },
   }
