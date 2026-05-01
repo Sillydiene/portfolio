@@ -33,6 +33,9 @@ export default defineConfig(({ mode }) => {
       commonjsOptions: {
         transformMixedEsModules: true,
       },
+      rollupOptions: {
+        external: ['socket.io-client'], // 🔥 IMPORTANT
+      },
     },
   }
 })
