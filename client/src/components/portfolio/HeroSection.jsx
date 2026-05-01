@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import imagePro from '../../assets/imagePro.png';
 import { useLanguage } from '../../context/LanguageContext.jsx';
 
@@ -30,6 +31,7 @@ export default function HeroSection() {
             id="hero"
             className="relative min-h-screen flex items-center justify-center overflow-hidden"
         >
+            {/* Background */}
             <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
             <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
@@ -51,7 +53,7 @@ export default function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
                     className="flex justify-center"
                 >
                     <div className="relative">
@@ -68,8 +70,8 @@ export default function HeroSection() {
                 <motion.p
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-                    className="mt-10 text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-inter font-light leading-relaxed"
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="mt-10 text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-inter leading-relaxed"
                 >
                     {texts[language].description}
                 </motion.p>
@@ -78,12 +80,12 @@ export default function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
+                    transition={{ duration: 0.8, delay: 0.45 }}
                     className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                     <a
                         href="#projects"
-                        className="px-8 py-3.5 bg-primary text-primary-foreground rounded-full font-inter text-sm font-medium tracking-wide hover:bg-primary/90 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+                        className="px-8 py-3.5 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition"
                     >
                         {texts[language].btnProject}
                     </a>
@@ -92,7 +94,7 @@ export default function HeroSection() {
                         href="/CV_DeveloppementWeb.pdf"
                         target="_blank"
                         rel="noreferrer"
-                        className="px-8 py-3.5 border border-border rounded-full font-inter text-sm font-medium tracking-wide text-foreground hover:border-primary/50 hover:text-primary transition-all duration-300"
+                        className="px-8 py-3.5 border border-border rounded-full text-sm font-medium hover:border-primary/50 hover:text-primary transition"
                     >
                         {texts[language].btnCV}
                     </a>
@@ -102,14 +104,14 @@ export default function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
                     className="mt-10"
                 >
                     <a
                         href="#about"
-                        className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+                        className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition"
                     >
-                        <span className="text-xs font-inter tracking-widest uppercase">
+                        <span className="text-xs uppercase">
                             {texts[language].scroll}
                         </span>
                         <ArrowDown className="w-4 h-4" />
@@ -120,27 +122,28 @@ export default function HeroSection() {
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.75, ease: 'easeOut' }}
+                    transition={{ duration: 0.8, delay: 0.75 }}
                     className="mt-8 flex items-center justify-center gap-4"
                 >
                     <a
                         href="https://github.com/Sillydiene"
                         target="_blank"
                         rel="noreferrer"
-                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+                        className="w-10 h-10 rounded-full border flex items-center justify-center hover:text-primary transition"
                     >
-                        <Github className="w-4 h-4" />
+                        <FaGithub className="w-4 h-4" />
                     </a>
 
                     <a
                         href="https://www.linkedin.com/in/el-hadji-silly-di%C3%A8ne-0b02ba1bb/"
                         target="_blank"
                         rel="noreferrer"
-                        className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-300"
+                        className="w-10 h-10 rounded-full border flex items-center justify-center hover:text-primary transition"
                     >
-                        <Linkedin className="w-4 h-4" />
+                        <FaLinkedin className="w-4 h-4" />
                     </a>
                 </motion.div>
+
             </div>
         </section>
     );

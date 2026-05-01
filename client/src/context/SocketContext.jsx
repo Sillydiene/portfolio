@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance = io('http://localhost:3001', {
+    const socketInstance = io(import.meta.env.VITE_BACKEND_URL, {
       transports: ['websocket', 'polling']
     });
 
