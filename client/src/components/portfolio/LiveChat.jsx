@@ -1,97 +1,80 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
-const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '15140000000';
+const socket = io(import.meta.env.VITE_BACKEND_URL);
 
 export default function LiveChat() {
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
     const [open, setOpen] = useState(false);
-    const [input, setInput] = useState('');
 
-    const sendToWhatsApp = () => {
-        const message = input.trim();
+    useEffect(() => {
+        socket.on("receive_message", (data) => {
+            setMessages((prev) => [...prev, data]);
+        });
 
-        if (!message) return;
+        return () => socket.off("receive_message");
+    }, []);
 
-        const fullMessage =
-            `Bonjour, je vous contacte depuis votre portfolio.%0A%0A` +
-            `Message : ${encodeURIComponent(message)}%0A%0A` +
-            `Page : ${encodeURIComponent(window.location.href)}`;
+    const sendMessage = () => {
+        if (!message.trim()) return;
 
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${fullMessage}`;
+        const msgData = {
+            message,
+            time: new Date().toLocaleTimeString(),
+        };
 
-        window.open(whatsappUrl, '_blank');
-        setInput('');
-    };
-
-    const handleKey = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendToWhatsApp();
-        }
+        socket.emit("send_message", msgData);
+        setMessages((prev) => [...prev, msgData]);
+        setMessage("");
     };
 
     return (
-        <div className="fixed bottom-6 right-24 z-50 flex flex-col items-end gap-3">
-            <AnimatePresence>
-                {open && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        transition={{ duration: 0.2 }}
-                        className="w-80 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden"
-                    >
-                        <div className="bg-primary px-4 py-3 flex items-center justify-between">
-                            <div>
-                                <p className="text-primary-foreground font-semibold text-sm">
-                                    Chat WhatsApp
-                                </p>
-                                <p className="text-primary-foreground/70 text-xs">
-                                    Réponse via WhatsApp
-                                </p>
-                            </div>
-
-                            <button onClick={() => setOpen(false)}>
-                                <X className="w-4 h-4 text-white" />
-                            </button>
-                        </div>
-
-                        <div className="h-72 overflow-y-auto p-4 bg-background flex items-center justify-center">
-                            <p className="text-center text-sm text-muted-foreground">
-                                Écrivez votre message, puis cliquez sur envoyer.
-                                <br />
-                                Vous serez redirigé vers WhatsApp.
-                            </p>
-                        </div>
-
-                        <div className="border-t p-3 flex gap-2">
-                            <textarea
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={handleKey}
-                                placeholder="Votre message..."
-                                rows={1}
-                                className="flex-1 px-3 py-2 rounded-xl bg-secondary text-sm resize-none outline-none"
-                            />
-
-                            <button
-                                onClick={sendToWhatsApp}
-                                className="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center"
-                            >
-                                <Send className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
+        <>
+            {/* Bouton flottant */}
             <button
                 onClick={() => setOpen(!open)}
-                className="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg"
+                className="fixed bottom-5 right-5 bg-blue-400 w-14 h-14 rounded-full text-black text-xl z-50"
             >
-                {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+                💬
             </button>
-        </div>
+
+            {/* Chat */}
+            {open && (
+                <div className="fixed bottom-20 right-5 w-80 bg-[#0b1a2b] rounded-xl shadow-lg border border-blue-400 z-50">
+
+                    <div className="bg-blue-400 text-black p-3 rounded-t-xl flex justify-between">
+                        Chat Live
+                        <button onClick={() => setOpen(false)}>✕</button>
+                    </div>
+
+                    <div className="h-60 overflow-y-auto p-3 text-white text-sm">
+                        {messages.map((msg, i) => (
+                            <div key={i} className="mb-2">
+                                <div className="bg-[#13263d] p-2 rounded-lg inline-block">
+                                    {msg.message}
+                                </div>
+                                <div className="text-xs opacity-50">{msg.time}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex p-2 gap-2">
+                        <input
+                            className="flex-1 p-2 rounded bg-[#13263d] text-white outline-none"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            placeholder="Message..."
+                        />
+                        <button
+                            onClick={sendMessage}
+                            className="bg-blue-400 px-3 rounded text-black"
+                        >
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
