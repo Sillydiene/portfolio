@@ -1,23 +1,38 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.VITE_BACKEND_URL);
-
 export default function LiveChat() {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [open, setOpen] = useState(false);
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        socket.on("receive_message", (data) => {
+        const newSocket = io(import.meta.env.VITE_BACKEND_URL, {
+            transports: ["websocket", "polling"], // 🔥 IMPORTANT
+        });
+
+        setSocket(newSocket);
+
+        newSocket.on("connect", () => {
+            console.log("✅ Connected:", newSocket.id);
+        });
+
+        newSocket.on("receive_message", (data) => {
             setMessages((prev) => [...prev, data]);
         });
 
-        return () => socket.off("receive_message");
+        newSocket.on("connect_error", (err) => {
+            console.log("❌ Socket error:", err.message);
+        });
+
+        return () => {
+            newSocket.disconnect();
+        };
     }, []);
 
     const sendMessage = () => {
-        if (!message.trim()) return;
+        if (!message.trim() || !socket) return;
 
         const msgData = {
             message,
