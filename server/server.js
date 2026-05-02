@@ -5,6 +5,11 @@ import cors from "cors";
 
 const app = express();
 
+// ✅ AJOUTE CETTE ROUTE (TRÈS IMPORTANT)
+app.get("/", (req, res) => {
+    res.send("Backend OK 🚀");
+});
+
 const allowedOrigins = [
     "http://localhost:5173",
     "https://portfolio-seven-lyart-91.vercel.app"
