@@ -5,7 +5,7 @@ import cors from "cors";
 
 const app = express();
 
-// ✅ AJOUTE CETTE ROUTE (TRÈS IMPORTANT)
+// ✅ TEST ROUTE
 app.get("/", (req, res) => {
     res.send("Backend OK 🚀");
 });
@@ -21,22 +21,25 @@ app.use(cors({
     credentials: true
 }));
 
+// ✅ IMPORTANT
 const server = http.createServer(app);
 
+// ✅ SOCKET.IO ATTACHÉ AU SERVER HTTP
 const io = new Server(server, {
     cors: {
         origin: allowedOrigins,
         methods: ["GET", "POST"],
         credentials: true
     },
-    transports: ["polling"] // 🔥 FIX RENDER
+    transports: ["polling", "websocket"] // 🔥 important
 });
 
+// 🔥 DEBUG
 io.on("connection", (socket) => {
     console.log("🔥 User connected:", socket.id);
 
     socket.on("send_message", (data) => {
-        console.log("📩 Message:", data);
+        console.log("📩 Message reçu:", data);
         io.emit("receive_message", data);
     });
 
@@ -45,6 +48,7 @@ io.on("connection", (socket) => {
     });
 });
 
+// ✅ PORT RENDER
 const PORT = process.env.PORT || 10000;
 
 server.listen(PORT, () => {
