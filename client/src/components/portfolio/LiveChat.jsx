@@ -9,7 +9,7 @@ export default function LiveChat() {
 
     useEffect(() => {
         const newSocket = io(import.meta.env.VITE_BACKEND_URL, {
-            transports: ["websocket", "polling"], // 🔥 IMPORTANT
+            transports: ["polling"], // 🔥 FIX POUR RENDER
         });
 
         setSocket(newSocket);
@@ -46,7 +46,6 @@ export default function LiveChat() {
 
     return (
         <>
-            {/* Bouton flottant */}
             <button
                 onClick={() => setOpen(!open)}
                 className="fixed bottom-5 right-5 bg-blue-400 w-14 h-14 rounded-full text-black text-xl z-50"
@@ -54,7 +53,6 @@ export default function LiveChat() {
                 💬
             </button>
 
-            {/* Chat */}
             {open && (
                 <div className="fixed bottom-20 right-5 w-80 bg-[#0b1a2b] rounded-xl shadow-lg border border-blue-400 z-50">
 

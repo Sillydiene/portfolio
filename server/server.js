@@ -5,13 +5,11 @@ import cors from "cors";
 
 const app = express();
 
-// ✅ URLs autorisées
 const allowedOrigins = [
     "http://localhost:5173",
     "https://portfolio-seven-lyart-91.vercel.app"
 ];
 
-// ✅ CORS EXPRESS
 app.use(cors({
     origin: allowedOrigins,
     methods: ["GET", "POST"],
@@ -20,24 +18,20 @@ app.use(cors({
 
 const server = http.createServer(app);
 
-// ✅ SOCKET.IO CONFIG (IMPORTANT)
 const io = new Server(server, {
     cors: {
         origin: allowedOrigins,
         methods: ["GET", "POST"],
         credentials: true
     },
-    transports: ["websocket", "polling"] // 🔥 IMPORTANT POUR RENDER
+    transports: ["polling"] // 🔥 FIX RENDER
 });
 
-// 🔥 CHAT LOGIC
 io.on("connection", (socket) => {
     console.log("🔥 User connected:", socket.id);
 
     socket.on("send_message", (data) => {
-        console.log("📩 Message reçu:", data);
-
-        // envoyer à tous les clients
+        console.log("📩 Message:", data);
         io.emit("receive_message", data);
     });
 
