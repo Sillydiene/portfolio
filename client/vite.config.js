@@ -8,7 +8,6 @@ const __dirname = path.dirname(__filename)
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiPort = env.PORT || '3001'
 
   return {
     plugins: [react()],
@@ -22,19 +21,15 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: `http://127.0.0.1:${apiPort}`,
+          target: `http://127.0.0.1:3001`,
           changeOrigin: true,
         },
       },
     },
 
-    // ✅ FIX FINAL POUR VERCEL
     build: {
       commonjsOptions: {
         transformMixedEsModules: true,
-      },
-      rollupOptions: {
-        external: ['socket.io-client'], // 🔥 IMPORTANT
       },
     },
   }
