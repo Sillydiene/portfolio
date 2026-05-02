@@ -5,41 +5,34 @@ import cors from "cors";
 
 const app = express();
 
-// ✅ TEST ROUTE
+// ✅ route test
 app.get("/", (req, res) => {
     res.send("Backend OK 🚀");
 });
 
-const allowedOrigins = [
-    "http://localhost:5173",
-    "https://portfolio-seven-lyart-91.vercel.app"
-];
-
+// 🔥 CORS FIX (TEMPORAIRE POUR TEST)
 app.use(cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST"],
-    credentials: true
+    origin: "*",
+    methods: ["GET", "POST"]
 }));
 
-// ✅ IMPORTANT
 const server = http.createServer(app);
 
-// ✅ SOCKET.IO ATTACHÉ AU SERVER HTTP
+// 🔥 SOCKET.IO FIX
 const io = new Server(server, {
     cors: {
-        origin: allowedOrigins,
-        methods: ["GET", "POST"],
-        credentials: true
+        origin: "*",
+        methods: ["GET", "POST"]
     },
-    transports: ["polling", "websocket"] // 🔥 important
+    transports: ["polling"] // important pour Render
 });
 
-// 🔥 DEBUG
+// 🔥 CHAT
 io.on("connection", (socket) => {
     console.log("🔥 User connected:", socket.id);
 
     socket.on("send_message", (data) => {
-        console.log("📩 Message reçu:", data);
+        console.log("📩 Message:", data);
         io.emit("receive_message", data);
     });
 
@@ -48,7 +41,6 @@ io.on("connection", (socket) => {
     });
 });
 
-// ✅ PORT RENDER
 const PORT = process.env.PORT || 10000;
 
 server.listen(PORT, () => {
