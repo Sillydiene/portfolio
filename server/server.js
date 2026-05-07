@@ -5,17 +5,12 @@ import cors from "cors";
 
 const app = express();
 
-// 🔥 DOMAINES AUTORISÉS
-const allowedOrigins = [
-    "http://localhost:5173",
-    "https://portfolio-seven-lyart-91.vercel.app"
-];
-
+// 🔥 IMPORTANT : autoriser TOUS les domaines (fix CORS)
 app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
+    origin: "*",
 }));
 
+// 🔥 ROUTE TEST (TRÈS IMPORTANT)
 app.get("/", (req, res) => {
     res.send("Backend OK 🚀");
 });
@@ -24,44 +19,28 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: allowedOrigins,
+        origin: "*",
         methods: ["GET", "POST"],
-        credentials: true
-    }
+    },
+    transports: ["polling", "websocket"] // 🔥 important
 });
 
-// 🔥 USERS CONNECTÉS
-let users = [];
-
+// 🔥 SOCKET
 io.on("connection", (socket) => {
-    console.log("🔥 CONNECTED:", socket.id);
+    console.log("✅ User connected:", socket.id);
 
-    // 🔹 JOIN USER
-    socket.on("join", (username) => {
-        users.push({ id: socket.id, username });
-        io.emit("users", users.length);
-    });
-
-    // 🔹 SEND MESSAGE
     socket.on("send_message", (data) => {
+        console.log("📩 Message:", data);
         io.emit("receive_message", data);
     });
 
-    // 🔹 TYPING
-    socket.on("typing", (username) => {
-        socket.broadcast.emit("typing", username);
-    });
-
-    // 🔹 DISCONNECT
     socket.on("disconnect", () => {
-        users = users.filter(u => u.id !== socket.id);
-        io.emit("users", users.length);
-        console.log("❌ DISCONNECTED:", socket.id);
+        console.log("❌ User disconnected:", socket.id);
     });
 });
 
 const PORT = process.env.PORT || 10000;
 
 server.listen(PORT, () => {
-    console.log(`🚀 Server running on ${PORT}`);
+    console.log("🚀 Server running on port " + PORT);
 });
