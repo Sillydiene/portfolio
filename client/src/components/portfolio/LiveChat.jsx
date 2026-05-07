@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { MessageCircle } from "lucide-react";
 
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
     transports: ["websocket", "polling"]
@@ -69,20 +70,21 @@ export default function LiveChat() {
 
     return (
         <>
-            {/* bouton */}
+            {/* 🔥 NOUVEAU BOUTON STYLE WHATSAPP */}
             <button
                 onClick={() => setOpen(!open)}
-                className="fixed bottom-5 right-5 bg-blue-400 w-14 h-14 rounded-full text-black text-xl z-50"
+                className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-lg shadow-green-500/30 hover:scale-105 transition-transform duration-300"
             >
-                💬
+                <MessageCircle className="w-6 h-6" />
             </button>
 
+            {/* CHAT */}
             {open && (
-                <div className="fixed bottom-20 right-5 w-80 bg-[#0b1a2b] rounded-xl shadow-lg border border-blue-400 z-50">
+                <div className="fixed bottom-24 right-5 w-80 bg-[#0b1a2b] rounded-xl shadow-lg border border-blue-400 z-50">
 
                     {/* HEADER */}
-                    <div className="bg-blue-400 text-black p-3 flex justify-between">
-                        Chat Live
+                    <div className="bg-blue-400 text-black p-3 flex justify-between items-center">
+                        <span>Chat Live</span>
                         <button onClick={() => setOpen(false)}>✕</button>
                     </div>
 
@@ -91,7 +93,6 @@ export default function LiveChat() {
                         👥 {users} utilisateur(s)
                     </div>
 
-                    {/* SI NOM PAS SET */}
                     {!nameSet ? (
                         <div className="p-3">
                             <input
